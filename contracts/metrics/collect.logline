@@ -1,0 +1,11 @@
+{
+  "contract": "metrics/collect",
+  "version": "1.0",
+  "description": "Collect span metrics",
+  "input_schema": {
+    "time_range": {"type": "string", "enum": ["5m", "1h", "24h"]}
+  },
+  "exec": {
+    "command": "jq --arg range \"$time_range\" '[inputs | select(.timestamp)] | length' spans/logline.main.jsonl"
+  }
+}

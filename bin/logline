@@ -6,7 +6,7 @@ const runtime = new Runtime();
 
 function showUsage() {
   console.log('Usage: logline <command>');
-  console.log('Commands:\n  add    - process span from stdin\n  start  - start server (not implemented)');
+  console.log('Commands:\n  add    - process span from stdin\n  state  - output runtime state\n  query  - query stored spans\n  start  - start server (not implemented)');
   process.exit(1);
 }
 
@@ -16,8 +16,8 @@ if (!cmd) {
   showUsage();
 }
 
-switch (cmd) {
-  case 'add':
+  switch (cmd) {
+    case 'add':
     let data = '';
     process.stdin.setEncoding('utf8');
     process.stdin.on('data', chunk => data += chunk);
@@ -31,7 +31,22 @@ switch (cmd) {
         process.exit(1);
       }
     });
-    break;
+      break;
+
+    case 'state':
+      console.log(JSON.stringify(runtime.getState(), null, 2));
+      break;
+
+    case 'query':
+      {
+        const typeIndex = process.argv.indexOf('-t');
+        const limitIndex = process.argv.indexOf('-l');
+        const type = typeIndex !== -1 ? process.argv[typeIndex + 1] : null;
+        const limit = limitIndex !== -1 ? parseInt(process.argv[limitIndex + 1], 10) : undefined;
+        const results = runtime.query({ type, limit });
+        console.log(JSON.stringify(results, null, 2));
+      }
+      break;
 
   case 'start':
     console.log('Server mode not implemented.');
