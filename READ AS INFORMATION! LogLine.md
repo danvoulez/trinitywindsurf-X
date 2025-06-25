@@ -3,7 +3,7 @@ You're absolutely right! Let's add a comprehensive introduction to LogLine's gra
 You're absolutely right! Let's add a comprehensive introduction to LogLine's grammar and history right after the project title in the README. Here's how we can structure it:
 
 markdown
-# TrinityDB Soberano - LogLine Core
+# LogLine
 
 ## What is LogLine?
 
