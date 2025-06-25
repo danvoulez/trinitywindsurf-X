@@ -1,0 +1,14 @@
+{
+  "contract": "query/run",
+  "version": "1.0",
+  "description": "Query stored spans",
+  "input_schema": {
+    "collection": "string",
+    "filter": "object",
+    "sort": {"type": "object", "default": {}},
+    "limit": {"type": "number", "default": 100}
+  },
+  "exec": {
+    "command": "jq --arg collection \".$collection\" --arg filter_str \"$filter\" --arg sort_str \"$sort\" --argjson limit $limit '{ results: [ inputs | select(.type == $collection) | .data ][0:$limit] }' spans/logline.main.jsonl"
+  }
+}

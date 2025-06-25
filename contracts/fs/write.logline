@@ -1,0 +1,13 @@
+{
+  "contract": "fs/write",
+  "version": "1.0",
+  "description": "Write content to a file",
+  "input_schema": {
+    "path": "string",
+    "content": "string",
+    "mode": {"type": "string", "default": "0644"}
+  },
+  "exec": {
+    "command": "jq -r '.content' > \"./data/$(jq -r '.path')\" && echo '{\"status\":\"success\"}'"
+  }
+}

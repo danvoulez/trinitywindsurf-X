@@ -1,0 +1,8 @@
+{
+  "contract": "middleware/auth",
+  "version": "1.0",
+  "description": "Authentication middleware for API endpoints",
+  "exec": {
+    "command": "jq --arg auth \"$HTTP_AUTHORIZATION\" '      if $auth | startswith(\"Bearer \") then        .token = ($auth | ltrimstr(\"Bearer \")) |        .auth = (.token | split(\".\")[1] | @base64d | fromjson)      else        .error = \"Missing or invalid Authorization header\"      end'"
+  }
+}

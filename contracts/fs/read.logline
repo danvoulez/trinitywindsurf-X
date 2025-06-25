@@ -1,0 +1,11 @@
+{
+  "contract": "fs/read",
+  "version": "1.0",
+  "description": "Read content from a file",
+  "input_schema": {
+    "path": "string"
+  },
+  "exec": {
+    "command": "cat \"./data/$(jq -r '.path')\" | jq -R '.'"
+  }
+}

@@ -1,0 +1,57 @@
+#!/usr/bin/env node
+const fs = require('fs');
+const Runtime = require('../core/runtime');
+
+const runtime = new Runtime();
+
+function showUsage() {
+  console.log('Usage: logline <command>');
+  console.log('Commands:\n  add    - process span from stdin\n  state  - output runtime state\n  query  - query stored spans\n  start  - start server (not implemented)');
+  process.exit(1);
+}
+
+const cmd = process.argv[2];
+
+if (!cmd) {
+  showUsage();
+}
+
+  switch (cmd) {
+    case 'add':
+    let data = '';
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', chunk => data += chunk);
+    process.stdin.on('end', () => {
+      try {
+        const spanData = JSON.parse(data);
+        const result = runtime.processSpan(spanData);
+        console.log(JSON.stringify(result, null, 2));
+      } catch (err) {
+        console.error('Invalid span JSON:', err.message);
+        process.exit(1);
+      }
+    });
+      break;
+
+    case 'state':
+      console.log(JSON.stringify(runtime.getState(), null, 2));
+      break;
+
+    case 'query':
+      {
+        const typeIndex = process.argv.indexOf('-t');
+        const limitIndex = process.argv.indexOf('-l');
+        const type = typeIndex !== -1 ? process.argv[typeIndex + 1] : null;
+        const limit = limitIndex !== -1 ? parseInt(process.argv[limitIndex + 1], 10) : undefined;
+        const results = runtime.query({ type, limit });
+        console.log(JSON.stringify(results, null, 2));
+      }
+      break;
+
+  case 'start':
+    console.log('Server mode not implemented.');
+    break;
+
+  default:
+    showUsage();
+}

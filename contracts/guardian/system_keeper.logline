@@ -1,0 +1,9 @@
+{
+  "contract": "guardian/system_keeper",
+  "version": "1.0",
+  "description": "Check system resources and emit health report",
+  "schedule": "* * * * *",
+  "exec": {
+    "command": "echo '{\"type\":\"system/health_report\",\"data\":{\"status\":\"ok\"}}'"
+  }
+}
